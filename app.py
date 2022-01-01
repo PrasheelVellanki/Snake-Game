@@ -49,19 +49,23 @@ class Snake:
 
 
     def move_up(self):
-        self.direction = 'up'
+        if self.direction != 'down':
+            self.direction = 'up'
         self.body_update()
 
     def move_down(self):
-        self.direction = 'down'
+        if self.direction != 'up':
+            self.direction = 'down'
         self.body_update()
 
     def move_left(self):
-        self.direction = 'left'
+        if self.direction != 'right':
+            self.direction = 'left'
         self.body_update()
         
     def move_right(self):
-        self.direction = 'right'
+        if self.direction != 'left':
+            self.direction = 'right'
         self.body_update()
     
     def increase_length(self, length):
@@ -129,6 +133,9 @@ class Game:
         for i in range(3, self.snake.length):
             if self.is_collision(self.snake.x[0], self.snake.x[i], self.snake.y[0], self.snake.y[i]):
                 raise "End Game"
+        
+        if self.snake.x[0] < 0 or self.snake.y[0] < 0 or self.snake.x[0] >= WIN_Width or self.snake.y[0] >= WIN_Height:
+            raise "End Game"
 
     def game_over_screen(self):
         self.game_status = False
@@ -137,9 +144,9 @@ class Game:
 
         self.surface.fill(BG_color)
         self.end_score = self.font_one.render(f"Final Score: {self.snake.length}", True, (200,200,200))
-        self.surface.blit(self.end_score,(400,400))
+        self.surface.blit(self.end_score,(400,300))
         self.end_message = self.font_two.render("Game Over. Try Again? (Press R)", True,  (200,200,200))
-        self.surface.blit(self.end_message,(400,500))
+        self.surface.blit(self.end_message,(400,400))
         pygame.display.update()
     
     def reset(self):
@@ -191,12 +198,9 @@ class Game:
             time.sleep(0.15)
         
 
+if __name__ == "__main__":
+    game = Game()
+    game.play()
 
-game = Game()
-game.play()
-
-
-#class Snake:
-    #def __init__(self, sc)
 
 
